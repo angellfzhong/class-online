@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title><%= title %></title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="/stylesheets/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <% include regist.ejs %>
+    <% include header.ejs %>
+    <div class="jumbotron">
+      <div class="container">
+        <h1>欢迎访问！</h1>
+        <p>班级在线交流平台，登录后可聊天，分享学习资料，发布课后感想</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-3 chat-div">
+          <h2>聊天室</h2>
+          <p class="index-chat"></p>
+          <p ><button class="btn btn-primary"  onclick="linkBtn('/chat')"  role="button">进入 &raquo;</button></p>
+        </div>
+        <div class="col-md-3 share-div">
+          <h2>资料分享</h2>
+          <p class="index-share"></p>
+          <p><button class="btn btn-primary" onclick="linkBtn('/share')"  role="button">进入 &raquo;</button></p>
+       </div>
+        <div class="col-md-3 note-div">
+          <h2>学习笔记</h2>
+          <p class="index-note"></p>
+          <p><button class="btn btn-primary" onclick="linkBtn('/note')"  role="button">进入 &raquo;</button></p>
+        </div>
+        <div class="col-md-3 say-div">
+            <h2>吐槽墙</h2>
+            <p class="index-say"></p>
+            <p><button class="btn btn-primary" onclick="linkBtn('/say')"  href="#" role="button">进入 &raquo;</button></p>
+          </div>
+      </div>
+      <hr>
+      <footer>
+        <p><small class="text-info">&copy; 2016-2018 Linfei. Zhong</small></p>
+      </footer>
+    </div> 
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="https://v3.bootcss.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/javascripts/index.js"></script>
+  </body>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>
+        <%= title %>
+    </title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/stylesheets/say.css" rel="stylesheet">
+    <style>
+    </style>
+    <script>
+        //获取用户头像
+        function getImg(username) {
+            var myimg = event.target
+            $.get("/getuserimg/"+username, function(result){
+                $(myimg).attr("src","/uploadimg/"+result)
+                $(myimg).attr("onload","")
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <% include regist.ejs %>
+        <% include header.ejs %>
+            <div class="jumbotron">
+                <div class="container">
+                    <div class="ol-md-2 col-sm-2 col-xs-4">
+                        <p>
+                            <img class="user-img " src="/uploadimg/<%= userimg%>" alt="">
+                        </p>
+                    </div>
+                    <div class="col-md-8">
+                        <textarea id="saysomething" class="form-control" maxlength="150" style="outline: none" cols="30" rows="5" placeholder="说点儿什么吧"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                    <p class="col-md-10 text-right" style="padding-top: 10px">
+                        <button class="btn btn-primary" onclick="sendMsg()">发表</button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="container">
+                <% for(var i = 0 ; i < sayinglist.length ; i++){ %>
+                    <div class="col-md-4" style="height: 180px">
+                        <div class="clearfix">
+                            <div style="float: left">
+                                <img class="user-img-list" src="/images/none.png" onload="getImg('<%= sayinglist[i].username %>')">
+                            </div>
+                            <div style="float:left">
+                                <p class="say-name">
+                                    <a href="/user/<%= sayinglist[i].username %>"><%= sayinglist[i].username %></a>
+                                    
+                                </p>
+                                <p class="say-date">
+                                    <%= sayinglist[i].sendtime %>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="say-context">
+                            <%= sayinglist[i].saying%>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+
+
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            
+            <script>window.jQuery || document.write('<script src="https://v3.bootcss.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+            <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+            <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+            <script src="/javascripts/index.js"></script>
+            <script> 
+                //列出所有说说
+                var lists = $(".say-context")
+
+                lists.each(function () {
+                    var say = $(this).html().trim()
+                    if (say.length > 60) {
+                        $(this).html(say.substring(0, 60) + "...")
+                    }
+                    $(this).on("click", function () {
+
+                        checksay(say)
+                    })
+
+                })
+
+                function checksay(say) {
+                    $("#tip-back").css("font-size", "16px")
+                    $("#tip-back").html(say)
+                    showTip()
+                }
+                //发布吐槽
+                function sendMsg() {
+                    var txt = $("#saysomething").val().trim()
+                    if (txt == "") {
+                        return
+                    } else {
+                        $.post("/say/postsaying", { saying: txt }, function (result) {
+                            if (result == "1") {
+                                $("#saysomething").val('')
+                                $("#tip-back").html('<div class="alert alert-warning">发布成功</div>')
+                                showTip()
+                                setTimeout(function () {
+                                    hideTip()
+                                    window.location.reload()
+                                }, 1000)
+
+                            } else {
+                                console.log("错误")
+                            }
+                        });
+                    }
+                }
+            </script>
+</body>

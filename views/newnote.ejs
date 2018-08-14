@@ -1,0 +1,28 @@
+<div class="col-md-4">
+    <% if(login){ %>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    <a href="/user/<%=username%>">我的笔记</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <ul id="mynotelist">
+                </ul>
+            </div>
+        </div>
+        <%
+        }
+        %>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a href="/note/notelist">全部笔记</a>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <ul id="allnotelist">
+                    </ul>
+                </div>
+            </div>
+</div>

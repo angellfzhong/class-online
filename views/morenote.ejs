@@ -1,0 +1,20 @@
+<% for(var i = 0 ; i < notelist.length ; i++){ %>
+        <li>
+            <div>
+                <a style="color: #17a2b8" href="/user/<%= notelist[i].username %>">
+                    <%= notelist[i].username %>
+                </a>
+                <small style="color: #b2b2b2;">
+                    <%= notelist[i].notetime %>
+                </small>
+            </div>
+            <h3 style="font-weight: bold">
+                <a href="/note/readnote/<%= notelist[i]._id %>" target="_blank">
+                    <%= notelist[i].notetitle %>
+                </a>
+            </h3>
+            <div class="note-info">
+                <%- notelist[i].notecontent.substring(0,200)  %>...
+            </div>
+        </li>
+<% } %>

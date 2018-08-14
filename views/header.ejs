@@ -1,0 +1,55 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+        aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">在线交流平台</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/chat">聊天室
+          </a>
+        </li>
+        <li>
+          <a href="/share">资料分享</a>
+        </li>
+        <li>
+          <a href="/note">学习笔记</a>
+        </li>
+        <li>
+          <a href="/say">吐槽</a>
+        </li>
+      </ul>
+      <% if(!login){ %>
+        <form class="navbar-form navbar-right">
+          <div class="form-group">
+            <input type="text" placeholder="登录名" id="uname" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="password" placeholder="密码" id="upassword" class="form-control">
+          </div>
+          <button type="button" class="btn btn-success" id="userlogin">登录</button>
+          <button type="button" class="btn btn-warning" onclick="showRegist()">注册</button>
+        </form>
+        <%
+            }else{
+            %>
+          <div class="navbar-text navbar-right">欢迎
+            <a href="/user/<%= username %>" id="loginname" class="navbar-link">
+              <%= username %>
+            </a>
+            <span id="logout" style="cursor: pointer;" class="label label-default"> 注销</span>
+          </div>
+          <%
+            }
+          %>
+    </div>
+    <!--/.navbar-collapse -->
+  </div>
+</nav>

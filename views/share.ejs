@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>
+    <%= title %>
+  </title>
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <link href="/stylesheets/style.css" rel="stylesheet">
+  <style>
+    #fileinfo{
+      width: 30%;
+      float: left
+    }
+    #uploadbtn {
+      float: left;
+      margin:0 20px;
+    }
+    #uploadresult {
+      line-height: 30px
+    }
+  </style>
+</head>
+
+<body>
+  <% include regist.ejs %>
+    <% include header.ejs %>
+      <div class="jumbotron">
+        <div class="container">
+          <h2>资料分享</h2>
+          <div  style="padding-top:20px;">
+            <input type="file" 
+            accept="text/*,application/*" id="choosefile" >
+          </div>
+          <div style="padding-top:20px;">
+            <input type="text" class="form-control" maxlength="30"  id="fileinfo" placeholder="请输入资料描述" >
+            <button class="btn btn-primary" id="uploadbtn">上传</button>
+            <span  id="uploadresult"></span>
+          </div>
+          <p style="padding-top:20px;clear: both">选择你要上传的学习资料分享给大家 （提示：不要超过20MB）</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <h4>资料列表</h4>
+        <hr>
+        <table class="table table-hover" >
+          <thead>
+            <tr>
+            <th class="col-md-8">文件名</td>
+            <th class="col-md-2 text-center">上传时间</td>
+            <th class="col-md-2 text-center">上传者</td>
+          </tr>
+        </thead>         
+          <% for(var i = 0 ; i < filelist.length ; i++){ %>
+          <tr title="<%= filelist[i].fileinfo %>">
+            <td><a href="/uploadfile/<%= filelist[i].userfile %>" download="<%= filelist[i].userfile %>"><%= filelist[i].userfile %></a></td>
+            <td class="text-center" style="color: #999"><%= filelist[i].uploaddate %></td>
+            <td class="text-center"><a href="/user/<%= filelist[i].username %>"><%= filelist[i].username %></a></td>   
+          </tr>
+          <% } %>
+        </table>
+      </div>
+
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="https://v3.bootcss.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+      <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+      <script src="/javascripts/index.js"></script>
+      <script>
+        var fileinput = document.querySelector('#choosefile')
+        var result = $("#uploadresult")
+        
+
+        $("#uploadbtn").click(function(){
+          var fileinfo = $("#fileinfo").val()
+          if(fileinput.files.length == 0) {
+            result.addClass('text-danger')
+            result.html('请选择文件')
+            return
+          }else if( fileinfo == '' ){
+            result.addClass('text-danger')
+            result.html('请输入文件描述(30字以内)')
+            return
+          }
+          else {
+            var formData = new FormData()
+            formData.append("fileinfo",fileinfo)
+            formData.append("userfile", fileinput.files[0]);
+            $.ajax({
+            url: "/share/uploadfile",
+            type: "POST",
+            data: formData,
+            processData: false,  
+            contentType: false,
+            success : function(data) {
+              if(data == "1") {
+                result.addClass('text-success')
+                $("#choosefile").val('')
+                $("#fileinfo").val('')
+                result.html('上传成功！')
+              } else {
+                console.log('xxx')
+              }
+            }
+            })
+          }
+        })
+      </script>
+</body>

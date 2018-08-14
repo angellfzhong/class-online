@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>
+        <%= title %>
+    </title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="/stylesheets/say.css" rel="stylesheet">
+    <style>
+        .panel-body li {
+            line-height: 40px;
+            border-bottom: 1px dashed #eee;
+
+        }
+
+        .panel-body li span {
+            display: none;
+            cursor: pointer
+        }
+
+        .panel-body li:hover span {
+            display: inline
+        }
+
+        .amount {
+            color: #17a2b8
+        }
+    </style>
+</head>
+
+<body>
+    <% include regist.ejs %>
+        <% include header.ejs %>
+            <div class="jumbotron">
+                <div class="container">
+                    <div class="ol-md-2 col-sm-2 col-xs-4">
+                        <p>
+                            <img class="user-img " src="/uploadimg/<%= userimg%>" alt="">
+                        </p>
+                    </div>
+                    <div>
+                        <h2 id="showusername">
+                            <%= username2 %>
+                        </h2>
+                        <p style="font-size: 16px;color: #888">
+                            <span>笔记</span>
+                            <span id="noteamount" class="amount">0</span>
+
+                            <span>分享</span>
+                            <span id="shareamount" class="amount">0</span>
+
+                            <span>吐槽</span>
+                            <span id="sayamount" class="amount">0</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a href="/note">笔记</a>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul id="user-note-list">
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a href="/share">分享</a>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul id="user-file-list"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <a href="/say">吐槽</a>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul id="user-say-list"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+            <script>window.jQuery || document.write('<script src="https://v3.bootcss.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+            <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+            <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+            <script src="/javascripts/index.js"></script>
+            <script> 
+                var uname = $('#showusername').html().trim()
+                console.log(uname)
+                var login = '<%=login%>'
+                var loginname = login == 'true' ? $('#loginname').html().trim() : ''
+                console.log(loginname)
+
+                function deleteInfo(cname, id) {
+                    $.post('/delete', { 'collectionName': cname, 'id': id }, function (result) {
+                        if (result.n == 1 && result.ok == 1) {
+                            $('#tip-back').html('<div class="alert alert-warning">删除成功</div>')
+                            showTip()
+                            setTimeout(function () {
+                                hideTip()
+                                window.location.reload()
+                            }, 1000)
+                        }
+                    })
+                }
+                //创建列表
+                function createMyList(col, result, path, title, myul) {
+                    for (var i = 0; i < result.length; i++) {
+                        var mypath = ''
+                        var myli = document.createElement('li')
+                        var mylink = document.createElement('a')
+
+                        if (col == 'notes') {
+                            mypath = path + result[i]._id
+                        }
+                        if (col == 'files') {
+                            mypath = path + result[i].userfile
+                            $(mylink).attr('download', result[i].userfile)
+                        }
+
+                        $(mylink).attr('href', mypath)
+                        $(mylink).attr('title', result[i][title])
+                        if (result[i][title].length > 18) {
+                            $(mylink).html(result[i][title].substring(0, 18) + '...')
+                        }
+                        else {
+                            $(mylink).html(result[i][title])
+                        }
+                        $(myli).append(mylink)
+                        if (uname == loginname) {
+                            var btn = deleteBtn()
+                            $(btn).on('click', (function (j) {
+                                return function () {
+                                    deleteInfo(col, result[j]._id)
+                                }
+                            })(i))
+
+                            $(myli).append(btn)
+                        }
+
+                        $(myul).append(myli)
+                    }
+                }
+                //删除按钮
+                function deleteBtn() {
+                    var btn = document.createElement('span')
+                    $(btn).addClass('pull-right')
+                    $(btn).html('删除')
+                    return btn
+                }
+
+                $.get('/usernote/' + uname, function (result) {
+                    if (result == '-1') {
+                        $('#user-note-list').html('暂无')
+                        return
+                    }
+                    $('#noteamount').html(result.length)
+                    createMyList('notes', result, '/note/readnote/', 'notetitle', '#user-note-list')
+
+                })
+
+                $.get('/userfiles/' + uname, function (result) {
+                    if (result == '-1') {
+                        $('#user-file-list').html('暂无')
+                        return
+                    }
+                    $('#shareamount').html(result.length)
+                    createMyList('files', result, '/file/', 'userfile', '#user-file-list')
+                })
+
+                $.get('/usersays/' + uname, function (result) {
+                    if (result == '-1') {
+                        $('#user-say-list').html('暂无')
+                        return
+                    }
+                    $('#sayamount').html(result.length)
+                    createMyList('says', result, '', 'saying', '#user-say-list')
+                })
+            </script>
+</body>

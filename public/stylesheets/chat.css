@@ -1,0 +1,104 @@
+.font14 {
+    font-size: 14px;
+}
+.font16 {
+    font-size: 16px;
+}
+.font18 {
+    font-size: 18px;
+}
+.font20 {
+    font-size: 20px;
+}
+.fontBold {
+    font-weight: bold
+}
+.fontItalic{
+    font-style: italic
+}
+.fontUnderline {
+    text-decoration: underline
+}
+.selected{
+    background: #ccc
+}
+
+
+
+/* 侧栏用户信息 */
+#user{
+    margin: 30px auto;
+    text-align: center;
+    position: relative;
+}
+#user .img {
+    width: 70px;
+    height: 70px;
+    margin: 10px auto;
+    border-radius: 50%;
+    background: #ccc;
+    overflow: hidden;
+    border: 1px solid #dbe0e5;
+}
+#user .img img {
+    width: 70px;
+    height: 70px;
+}
+#user-name {
+    font-size: 14px;
+    color:#999;
+    font-weight: bold
+}
+.iconlist {
+    margin-top: 100px;
+    padding: 10px;
+    border-top:1px solid #dbe0e5;
+}
+.iconlist ul  {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+} 
+.iconlist li {
+    float: left;
+    width: 33%;
+    font-size: 12px;
+    text-align: center;
+    color:#888;
+    line-height: 30px;
+    cursor: pointer;
+}
+.iconlist .file {
+    width: 100%;
+    height: 24px;
+    background: url('/images/file.png') center no-repeat
+}
+.iconlist .note {
+    width: 100%;
+    height: 24px;
+    background: url('/images/note.png') center no-repeat
+}
+.iconlist .say {
+    width: 100%;
+    height: 24px;
+    background: url('/images/say.png') center no-repeat
+}
+.chatmember {
+    position: absolute;
+    width: 100%;
+    height: 330px;
+    bottom: 0;
+    padding: 10px;
+    border-top:1px solid #dbe0e5;
+    overflow-y: auto
+}
+#online-chat-user a{
+    display: block;
+    font-weight: normal;
+    line-height: 25px;
+    text-indent: 10px;
+}
+
+#sendmsg {
+    font-size: 14px
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>
+        <%= title %>
+    </title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <% include regist.ejs %>
+        <% include header.ejs %>
+            <div class="container" style="padding-top: 30px">
+                <div class="col-md-8">
+                    <h4>
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 写笔记</h4>
+                    <br>
+                    <input id="notetitle" class="form-control input-lg text-center" type="text" maxlength="50" placeholder="在这里输入笔记标题">
+                    <hr>
+                    <div id="summernote"></div>
+                    <p class="text-right">
+                        <button id="postbtn" class="btn btn-primary">发布</button>
+                        <button id="resetbtn" class="btn btn-default">取消</button>
+                    </p>
+                </div>
+                <% include newnote.ejs %>
+            </div>
+
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+            <script>window.jQuery || document.write('<script src="https://v3.bootcss.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+            <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+            <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+            <script src="/javascripts/index.js"></script>
+            <script src="/javascripts/note.js"></script>
+            <script>
+                //初始化文本编辑器
+                $('#summernote').summernote({
+                    tabsize: 2,
+                    height: 500,
+                    toolbar: [
+                        // [groupName, [list of button]]
+                        ['style', ['style']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['link', ['linkDialogShow', 'unlink']],
+                        ['table', ['table']],
+                        ['fullscreen', ['fullscreen']],
+                        ['codeview', ['codeview']]
+                    ]
+                });
+            </script>
+
+</body>

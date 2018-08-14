@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>
+        <%= title %>
+    </title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <style>
+        .note-info {
+            padding-bottom: 20px;
+            font-size: 14px;
+            color: #888;
+            overflow: hidden;
+            border-bottom: 1px solid #eee
+        }
+
+        .author-info {
+            padding: 20px 0;
+        }
+
+        .author {
+            display: inline-block;
+            font-size: 18px;
+            padding-right: 20px;
+        }
+
+        body {
+            background: #eee
+        }
+
+        h2 {
+            padding-top: 20px;
+            font-weight: bold;
+        }
+
+        .note-content {
+            background: #fff;
+            padding: 30px;
+            margin:10px 0 100px;
+            box-shadow: 0px -5px 10px 0px #ddd, /*上边阴影  红色*/
+            -5px 0px 10px 0px #ddd, /*左边阴影  绿色*/
+            5px 0px 10px 0px #ddd, /*右边阴影  蓝色*/
+            0px 5px 10px 0px #ddd;
+            /*下边阴影  黄色*/
+        }
+    </style>
+</head>
+
+<body>
+    <% include regist.ejs %>
+        <% include header.ejs %>
+            <div class="container" style="padding-top: 30p">
+                <div class="col-md-10 col-md-offset-1">
+                    <h2>
+                        <%= note.notetitle %>
+                    </h2>
+                    <div class="author-info">
+                        <span>
+                            <a class="author" href="/user/<%= note.username %>">
+                                <%= note.username %>
+                            </a>
+                        </span>
+                        <span style="color: #999">
+                            <%= note.notetime %>
+                        </span>
+                    </div>
+                    <div class="note-content">
+                        <%- note.notecontent %>
+                    </div>
+                </div>
+            </div>
+            <!-- Bootstrap core JavaScript
+    ================================================== -->
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+            <script>window.jQuery || document.write('<script src="https://v3.bootcss.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+            <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+            <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"></script>
+            <script src="/javascripts/index.js"></script>
+            <script src="/javascripts/note.js"></script>
+</body>

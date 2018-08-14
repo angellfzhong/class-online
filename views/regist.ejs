@@ -1,0 +1,54 @@
+<div id="cover"></div>
+<div id="tip-back" class="col-md-3"></div>
+<div id="regist-back" class="col-md-3">
+    <form>
+        <div class="form-group">
+          <label for="username">用户名</label>
+          <input type="text" class="form-control" maxlength="10" 
+          name="username" id="username" placeholder="请输入1-10字符以内的用户名" >
+        </div>
+        <div class="form-group">
+          <label for="userpassword">密码</label>
+          <input type="password" class="form-control" 
+           maxlength="10" name="userpassword" id="userpassword" placeholder="请输入4-10位的密码">
+        </div>
+        <div class="form-group">
+          <div style="width: 70%;float: left;">
+            <label for="selectUserImg" >上传头像</label>
+            <input type="file" id="selectimg"  accept="image/gif,image/jpeg,image/png"   onchange="handleFiles(this.files)">
+            <p class="help-block">请上传100*100大小的png/jpg/gif格式头像</p>
+          </div>
+          <div class="show-img" id="showimg" >
+
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group">
+            <div class="alert alert-danger" id="warning">用户名输入不合法</div>
+        </div>
+        <button type="button" class="btn btn-primary " id="registbtn">注册</button>
+        <button type="reset" class="btn btn-default " onclick="resetForm()" >重置</button>
+      </form>
+</div>
+<script>
+//用户上传头像
+window.URL = window.URL || window.webkitURL
+var showimg = document.querySelector("#showimg")
+//预览头像
+function handleFiles(file) {
+  if(!file.length) {
+    showimg.innerHTML = "没有选择文件"
+  }else{
+    showimg.innerHTML = ""
+    var img = document.createElement("img")
+    img.src = window.URL.createObjectURL(file[0])
+    img.width = 50
+    img.height = 50
+    img.onload = function(){
+      window.URL.revokeObjectURL(this.src)
+    }
+    showimg.appendChild(img)
+  }
+}
+
+</script>

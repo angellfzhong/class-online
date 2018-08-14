@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>
+    <%= title %>
+  </title>
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link href="https://v3.bootcss.com/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <script src="https://v3.bootcss.com/assets/js/ie-emulation-modes-warning.js"></script>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <link href="/stylesheets/style.css" rel="stylesheet">
+  <link href="/stylesheets/chat.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+  <% include regist.ejs %>
+    <% include header.ejs %>
+
+      <div class="chat-back">
+        <div class="container">
+          <div class="chat">
+            <div class="chat-list">
+              <div class="notice">公告：欢迎进入聊天市，请文明发言。当前
+                <span id="chatnum">0</span>人在线</div>
+              <ul id="msg-list"></ul>
+            </div>
+            <div class="user-list">
+              <div id="user">
+                <div class="img">
+                  <img src="/uploadimg/<%= userimg %>" alt="">
+                </div>
+                <div id="user-name">
+                  <%= username %>
+                </div>
+              </div>
+              <div class="iconlist">
+                <p>其它版块</p>
+                <ul>
+                  <li onclick="window.open('/share')">
+                    <div class="file"></div>
+                    <div>资料分享</div>
+                  </li>
+                  <li onclick="window.open('/note')">
+                    <div class="note"></div>
+                    <div>课堂笔记</div>
+                  </li>
+                  <li onclick="window.open('/say')">
+                    <div class="say"></div>
+                    <div>吐槽墙</div>
+                  </li>
+                </ul>
+              </div>
+              <div class="chatmember">
+                <p>全部成员</p>
+                <div id="online-chat-user">
+                </div>
+
+              </div>
+            </div>
+            <div class="input-box">
+              <div class="banner" id="styleBanner">
+                <span class="font16" onclick="removeStyle()">A</span>
+                <span class="font20" onclick="fontStyle(event,'font20')">A</span>
+                <span class="font16 fontBold" onclick="fontStyle(event,'fontBold')">B</span>
+                <span class="font16 fontUnderline" onclick="fontStyle(event,'fontUnderline')">U</span>
+                <span class="font16 fontItalic" onclick="fontStyle(event,'fontItalic')">I</span>
+                <span style="background:#000" onclick="fontColor('#000')"> </span>
+                <span style="background:rgba(0,128,255)" onclick="fontColor('rgba(0,128,255)')"> </span>
+                <span style="background:rgba(255,128,128)" onclick="fontColor('rgba(255,128,128)')"> </span>
+                <span style="background:rgba(255,128,64)" onclick="fontColor('rgba(255,128,64')"> </span>
+                <span style="background:rgba(198,0,0)" onclick="fontColor('rgba(198,0,0)')"> </span>
+                <span style="background:rgba(128,128,128)" onclick="fontColor('rgba(128,128,128)')"> </span>
+                <span style="background:rgba(128,0,128)" onclick="fontColor('rgba(128,0,128)')"> </span>
+              </div>
+              <textarea id="input-area" wrap="hard" cols="30" rows="10"></textarea>
+              <div class="input-btn">
+                <button id="sendmsg">发送</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+      <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+      <script>window.jQuery || document.write('<script src="https://v3.bootcss.com/assets/js/vendor/jquery.min.js"><\/script>')</script>
+      <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+      <script src="https://v3.bootcss.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+      <script>
+        function fontStyle(event, classname) {
+          $(event.target).toggleClass("selected")
+          $("#input-area").toggleClass(classname)
+          console.log($("#input-area").attr("class"))
+        }
+        function fontColor(c) {
+          $("#input-area").css("color", c)
+        }
+        function removeStyle() {
+          $("#styleBanner").children(".selected").removeClass("selected");
+          $("#input-area").removeClass()
+        }
+      </script>
+      <script>
+        function createUserList(users) {
+          var num = users.length
+          $("#chatnum").text(num)
+          var ulist = document.createElement('div')
+          for (var i = 0; i < num; i++) {
+            var ulink = document.createElement('a')
+            $(ulink).html(users[i])
+            $(ulink).attr("href", "/user/" + users[i])
+            $(ulist).append(ulink)
+          }
+          $("#online-chat-user").html(ulist)
+        }
+
+
+        var socket = io.connect("http://192.168.0.105:3000");
+        var username = $("#user-name").html().trim()
+        //统计聊天室人数
+        socket.emit("enterchatroom", username)
+        socket.on("enterchatroom", function (users) {
+          createUserList(users)
+        })
+
+        window.onunload = function () {
+          socket.emit("leavechatroom", username)
+        }
+
+        socket.on("leavechatroom", function (users) {
+          createUserList(users)
+        })
+        //向服务器发送聊天内容
+        $('#sendmsg').click(function () {
+          if ($("#input-area").val() == "") {
+            $("#input-area").focus()
+            return
+          }
+          //获取当前聊天字体样式及颜色
+          var myclass = $("#input-area").attr('class')
+          var mycolor = $("#input-area").css('color')
+          socket.emit("sendmessage", {
+            "message": document.querySelector("#input-area").value,
+            "user": $("#user-name").html(),
+            "font": {
+              class: myclass,
+              color: mycolor
+            }
+          });
+          $("#input-area").val("")
+          $("#input-area").focus()
+        })
+
+
+        socket.on("sendmessage", function (msg) {
+          console.log(msg.font.color)
+          var msgdiv = document.createElement("div")
+          var msgdate = document.createElement("div")
+          //创建聊天内容div
+          msgdiv.className = msg.font.class
+          msgdiv.style.color = msg.font.color
+          msgdiv.innerHTML = msg.message
+          //创建聊天时间div
+          msgdate.className = "msg-date"
+          msgdate.innerHTML = msg.user + " " + new Date().toLocaleString()
+          //创建li
+          var msgli = document.createElement("li")
+          msgli.appendChild(msgdate)
+          msgli.appendChild(msgdiv)
+
+          $("#msg-list").append(msgli);
+          var t = $("#msg-list").prop('scrollHeight')
+          $("#msg-list").scrollTop(t)
+        });
+      </script>
+      <script src="/javascripts/index.js"></script>
+</body>

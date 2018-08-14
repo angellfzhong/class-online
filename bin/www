@@ -1,0 +1,143 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('classonline:server');
+
+//socket.io
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+// var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+//定义数组去重的方法
+Array.prototype.unique = function(){
+  var arr = []; 　　 //创建一个临时数组
+  var obj = {}; 　　//创建一个空对象
+  for(var i = 0; i < this.length; i++){ 　　//遍历当前要去重的数组
+   if(!obj[this[i]]){  　//判断obj对象中是否存有当前项，没有则执行
+    arr.push(this[i]); 　　//将当前项push到临时数组中
+    obj[this[i]] = 1; 　　//将当前项存入obj对象
+   }
+  }
+  return arr;
+ }
+
+//socket.io
+var userlist = []
+io.on("connection", function (socket) {
+  //用户进入聊天室
+  socket.on("enterchatroom", function (user) {
+    if (userlist.length == 0) {
+      userlist.push(user)
+      //var num = io.eio.clientsCount //当前连接数量
+      console.log("当前连接数:" + userlist.length)
+    }
+    else {
+      userlist.push(user)
+      //var num = io.eio.clientsCount
+    }
+    var newlist = userlist.unique()
+    io.emit("enterchatroom", newlist);
+  })
+
+  //用户离开聊天室
+  socket.on("leavechatroom", function (user) {
+    if (userlist.indexOf(user) != -1) {
+      var index = userlist.indexOf(user)
+      userlist.splice(index, 1)
+      var newlist = userlist.unique()
+      io.emit("leavechatroom", newlist);
+    }
+
+  })
+
+  //发送聊天信息
+  socket.on("sendmessage", function (msg) {
+    //把接收到的msg原样广播 
+    io.emit("sendmessage", msg);
+  });
+});
+
+
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
