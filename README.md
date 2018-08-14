@@ -17,9 +17,10 @@
 
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/3.jpg)
 
-新建文章页面使用了基于bootstrao和jquery的富文本编辑器
+新建文章页面使用了基于bootstrap和jquery的富文本编辑器
 
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/5.jpg)
+
 
 文章列表使用ajax下拉刷新，用户详情页面可自行删除已发布的信息。使用express.session判断登录状态，实现免登陆功能。
 
