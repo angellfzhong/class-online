@@ -21,6 +21,8 @@
 
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/5.jpg)
 
+文章列表使用ajax下拉刷新，用户详情页面可自行删除已发布的信息。使用express.session判断登录状态，实现免登陆功能。
+
 #### 运行
 ```
 $ npm install
