@@ -7,9 +7,11 @@
 
 使用了bootstrap实现响应式页面。
 
-
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/1.jpg)
+
+聊天室使用了socket.io，实时推送聊天信息。可自定义聊天文字样式，实时显示在线人数。
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/2.jpg)
+
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/3.jpg)
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/4.jpg)
 
