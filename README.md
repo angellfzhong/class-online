@@ -6,9 +6,9 @@
 使用express搭建项目框架，定义路由，res.render()渲染页面，mongoDB操作数据库实现数据的增删查改功能。
 
 * app.js 入口页面 
-* bin/www  socket.io
+* bin/www  创建http server及websocket服务
 * routes/index.js  路由接口
-* models/db.js  数据库操作方法
+* models/db.js  数据库操作
 
 
 
