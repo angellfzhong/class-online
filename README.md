@@ -17,6 +17,7 @@
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/1.jpg)
 
 #### 聊天室使用了socket.io，实时推送聊天信息。可自定义聊天文字样式，实时显示在线人数。
+#### 后台使用数组去重过滤重复进入聊天室的用户
 
 ![image](https://github.com/angellfzhong/class-online/blob/master/img/2.jpg)
 
